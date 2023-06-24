@@ -117,7 +117,7 @@
     function f(x) { return -x * (x - 4); };
 
     let r = board.create('riemannsum',
-      [[g, f], function () { return s.Value(); }, 'lower', 0, 4],
+      [[g, f], function () { return s.Value(); }, function () { return side; }, 0, 4],
       { fillOpacity: 0.4 }
     );
 
