@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A integral definida</title>
+
+
+  <link rel="stylesheet" type="text/css" href="https://jsxgraph.org/distrib/jsxgraph.css" />
+  <script type="text/javascript" src="https://jsxgraph.org/distrib/jsxgraphcore.js"></script>
+
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      background-color: lightgray;
+    }
+
+    #wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: min(90%, 90vh);
+      width: 100%;
+      padding-top: 1%;
+      padding-bottom: 1%;
+      color: blue;
+    }
+
+    #jxgbox {
+      flex: 1;
+      width: 80%;
+      height: 90%;
+    }
+
+    /* .jxgbox {
+      background-color: 'blue';
+    } */
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    A INTEGRAL DEFINIDA
+    <div id="jxgbox" class="jxgbox"> </div>
+  </div>
+
+
+  <script>
+    const board = JXG.JSXGraph.initBoard('jxgbox', {
+      boundingbox: [-1, 7, 6, -3], axis: true, showCopyright: false,
+      pan: {
+        enabled: true,
+        needTwoFingers: true,
+        needShift: true
+      },
+      browserPan: true,
+      zoom: {
+        enabled: false,
+        needShift: true
+      }
+    });
+
+
+    let s = board.create('slider', [[1, 6.5], [4, 6.5], [1, 10, 100]], { name: 'n', snapWidth: 1, size: 12 });
+    // let a = board.create('slider', [[0.5, -1], [4, -1], [-10, 0, 0]], { name: 'start', size: 12 });
+    // let b = board.create('slider', [[0.5, -1.5], [4, -1.5], [0, Math.PI, 10]], { name: 'end', size: 12 });
+
+    let side = 'right';
+
+    const sumSideText = () => { return side == 'right' ? 'R-' + s.Value() : 'L-' + s.Value() }
+
+    let butt = board.create('button', [4, 5.5, 'left', function () {
+      butt.value = !butt.value;
+      if (butt.value) {
+        side = 'right';
+      } else {
+        side = 'left';
+      }
+      butt.rendNodeButton.innerHTML = sumSideText();
+
+    }], { fontSize: 30 }); //cssDefaultStyle: 'height: 2em; color: white;'
+
+    let buttRandom = board.create('button', [4, 5, 'Random', function () {
+      buttRandom.value = !buttRandom.value;
+      if (buttRandom.value) {
+        side = 'random';
+      }
+
+    }], { fontSize: 30 }); //cssDefaultStyle: 'height: 2em; color: white;'
+
+    // Set initial values for the button
+    if (!JXG.exists(butt.value)) {
+      butt.value = false;
+      butt.rendNodeButton.innerHTML = sumSideText();
+    }
+    if (!JXG.exists(buttRandom.value)) {
+      buttRandom.value = true;
+    }
+
+
+    // when slider changes....
+    s.coords.on('update', function () {
+      butt.rendNodeButton.innerHTML = sumSideText();
+    });
+
+    //s.startAnimation(1, 20);  // runs animation....
+
+
+
+    function g(x) { return 0.5 * x * x - 2 * x; };
+    function f(x) { return -x * (x - 4); };
+
+    let r = board.create('riemannsum',
+      [[g, f], function () { return s.Value(); }, 'lower', 0, 4],
+      { fillOpacity: 0.4 }
+    );
+
+    let plotf = board.create('functiongraph', [f, -2, 5], {
+      strokeWidth: 2, withLabel: true,
+      name: () => 'y = x^3 -x', label: {
+        fontSize: 20,
+        position: 'urt',
+        color: 'blue',
+        // offset: [0, -20],
+      },
+    });
+    let plotg = board.create('functiongraph', [g, -2, 5], {
+      strokeWidth: 2, name: '0.5 x^2 - 2 x', withLabel: true,
+      strokeColor: 'red',
+      label: {
+        fontSize: 20,
+        position: 'bot',
+        color: 'red',
+        // offset: [0, -20],
+      },
+    });
+    let t = board.create('text', [1, 5.5, function () { return 'Soma = ' + JXG.toFixed(r.Value(), 4); }], { fontSize: 30 });
+
+
+    // let plot = board.create('functiongraph', [f, function () { return a.Value(); }, function () { return b.Value(); }],
+    //   { strokeWidth: 3, strokeColor: 'black' });
+
+    // let os = board.create('riemannsum', [f,
+    //   function () { return s.Value(); }, function () { return side; },
+    //   function () { return a.Value(); },
+    //   function () { return b.Value(); }
+    // ],
+    //   { fillColor: '#ffff00', fillOpacity: 0.3 });
+
+
+    // board.create('text', [-2.5, 1, function () { return 'Soma = ' + (JXG.Math.Numerics.riemann(f, s.Value(), () => side, a.Value(), b.Value())[2].toFixed(4)); }],
+    //   { fontSize: 30 });
+
+
+  </script>
+
+</body>
+
+</html>
