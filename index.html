@@ -67,7 +67,7 @@
     });
 
 
-    let s = board.create('slider', [[1, 6.5], [4, 6.5], [1, 10, 100]], { name: 'n', snapWidth: 1, size: 12 });
+    let s = board.create('slider', [[1, 6.5], [4, 6.5], [1, 5, 50]], { name: 'n', snapWidth: 1, size: 12 });
     // let a = board.create('slider', [[0.5, -1], [4, -1], [-10, 0, 0]], { name: 'start', size: 12 });
     // let b = board.create('slider', [[0.5, -1.5], [4, -1.5], [0, Math.PI, 10]], { name: 'end', size: 12 });
 
@@ -86,7 +86,7 @@
 
     }], { fontSize: 30 }); //cssDefaultStyle: 'height: 2em; color: white;'
 
-    let buttRandom = board.create('button', [4, 5, 'Random', function () {
+    let buttRandom = board.create('button', [4, 4.5, 'Random', function () {
       buttRandom.value = !buttRandom.value;
       if (buttRandom.value) {
         side = 'random';
@@ -118,44 +118,53 @@
 
     let r = board.create('riemannsum',
       [[g, f], function () { return s.Value(); }, function () { return side; }, 0, 4],
-      { fillOpacity: 0.4 }
+      { fillOpacity: 0.5, layer: 10, }
     );
 
     let plotf = board.create('functiongraph', [f, -2, 5], {
-      strokeWidth: 2, withLabel: true,
+      strokeWidth: 2, withLabel: true, strokeColor: 'blue',
       name: () => 'y = x^3 -x', label: {
-        fontSize: 20,
+        fontSize: 25,
         position: 'urt',
         color: 'blue',
-        // offset: [0, -20],
+        offset: [40, 20],
+        fixed: false
       },
     });
     let plotg = board.create('functiongraph', [g, -2, 5], {
       strokeWidth: 2, name: '0.5 x^2 - 2 x', withLabel: true,
       strokeColor: 'red',
       label: {
-        fontSize: 20,
+        fontSize: 25,
         position: 'bot',
         color: 'red',
-        // offset: [0, -20],
+        offset: [40, -20],
+        fixed: false
       },
     });
-    let t = board.create('text', [1, 5.5, function () { return 'Soma = ' + JXG.toFixed(r.Value(), 4); }], { fontSize: 30 });
+    let soma = board.create('text', [-0.5, 5, function () { return 'Soma = ' + JXG.toFixed(r.Value(), 4); }], { fontSize: 30 });
 
 
-    // let plot = board.create('functiongraph', [f, function () { return a.Value(); }, function () { return b.Value(); }],
-    //   { strokeWidth: 3, strokeColor: 'black' });
+    let ineq2 = board.create('inequality', [plotg], {
+      visible: false, //() => chk_region.Value(),
+      fillColor: 'none',
+      opacity: 0.8,
+      inverse: true,
+    })
+    let ineq3 = board.create('inequality', [plotf], {
+      fillColor: 'none',
+      opacity: 0.8,
+      visible: false, //() => chk_region.Value(),
+    })
 
-    // let os = board.create('riemannsum', [f,
-    //   function () { return s.Value(); }, function () { return side; },
-    //   function () { return a.Value(); },
-    //   function () { return b.Value(); }
-    // ],
-    //   { fillColor: '#ffff00', fillOpacity: 0.3 });
-
-
-    // board.create('text', [-2.5, 1, function () { return 'Soma = ' + (JXG.Math.Numerics.riemann(f, s.Value(), () => side, a.Value(), b.Value())[2].toFixed(4)); }],
-    //   { fontSize: 30 });
+    let region = board.create('curveintersection', [ineq3, ineq2], {
+      fillColor: 'lightgreen',
+      strokeWidth: 0,
+      needsRegularUpdate: true,
+      layer: 0,
+      opacity: 0.4,
+      visible: true//() => chk_region.Value(),
+    })
 
 
   </script>
