@@ -118,7 +118,7 @@
 
     let r = board.create('riemannsum',
       [[g, f], function () { return s.Value(); }, function () { return side; }, 0, 4],
-      { fillOpacity: 0.5, layer: 10, }
+      { fillOpacity: 0.5, layer: 10 }
     );
 
     let plotf = board.create('functiongraph', [f, -2, 5], {
@@ -160,7 +160,7 @@
     let region = board.create('curveintersection', [ineq3, ineq2], {
       fillColor: 'lightgreen',
       strokeWidth: 0,
-      needsRegularUpdate: true,8
+      needsRegularUpdate: true,
       layer: 0,
       opacity: 0.4,
       visible: true//() => chk_region.Value(),
