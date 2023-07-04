@@ -123,7 +123,7 @@
 
     let plotf = board.create('functiongraph', [f, -2, 5], {
       strokeWidth: 2, withLabel: true, strokeColor: 'blue',
-      name: () => 'y = x^2 - 4x', label: {
+      name: () => 'y = 4x - x^2', label: {
         fontSize: 25,
         position: 'urt',
         color: 'blue',
@@ -160,7 +160,7 @@
     let region = board.create('curveintersection', [ineq3, ineq2], {
       fillColor: 'lightgreen',
       strokeWidth: 0,
-      needsRegularUpdate: true,
+      needsRegularUpdate: true,8
       layer: 0,
       opacity: 0.4,
       visible: true//() => chk_region.Value(),
